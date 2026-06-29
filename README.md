@@ -1,5 +1,7 @@
 # Zenith Intelligence Dashboard
 
+https://ai.studio/apps/46c5e04a-2100-4394-a65c-2ecb95d94018
+
 Zenith ist eine hochgradig personalisierbare, KI-gestützte Arbeitsumgebung und ein intelligentes Produktivitäts-Dashboard. Es wurde entwickelt, um modernste KI-Agenten, NLP-basierte Organisationswerkzeuge, Reiseplaner und Smart-Home-Zentralen in einer ästhetischen, nahtlosen und reaktionsschnellen Benutzeroberfläche zu vereinen.
 
 ---

@@ -1,20 +1,65 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Zenith Intelligence Dashboard
 
-# Run and deploy your AI Studio app
+Zenith ist eine hochgradig personalisierbare, KI-gestützte Arbeitsumgebung und ein intelligentes Produktivitäts-Dashboard. Es wurde entwickelt, um modernste KI-Agenten, NLP-basierte Organisationswerkzeuge, Reiseplaner und Smart-Home-Zentralen in einer ästhetischen, nahtlosen und reaktionsschnellen Benutzeroberfläche zu vereinen.
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/46c5e04a-2100-4394-a65c-2ecb95d94018
+## 🎨 Hauptmerkmale
 
-## Run Locally
+*   **Persönlicher KI-Agent & Schreib-Assistent:** Direkte Unterhaltungen mit Google Gemini für Brainstorming, Texterstellung und Korrekturen.
+*   **NLP-Aufgabenliste & Terminkalender:** Intelligente Aufgabenverwaltung, die Fälligkeiten und Prioritäten automatisch aus natürlicher Sprache erkennt.
+*   **Meeting Assistant:** Audioaufzeichnung, Transkribierung und automatisierte Ableitung von Action-Items.
+*   **Sicherheits- & CRM-Netzwerk:** Pflege von Beziehungen mit interaktiver grafischer Visualisierung von Verbindungsnetzwerken.
+*   **Musik & Ambient-Synthesizer:** Entspannende Soundtracks abspielen oder eigene Melodien über den integrierten Synthesizer komponieren.
+*   **Google Maps Reisebegleiter:** Reiserouten planen, Sehenswürdigkeiten entdecken und den Echtzeit-Übersetzer nutzen.
+*   **Umfassende Systemeinstellungen:** Volle Kontrolle über Themen (z.B. Cosmic Dark, Amber Warm, OLED Black), Schriftarten (Inter, Space Grotesk, JetBrains Mono), Akzentfarben, KI-Modelle, API-Schlüssel und Datenschutzeinstellungen.
 
-**Prerequisites:**  Node.js
+---
 
+## 🔐 Benutzeranmeldung (Admin-Konto)
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Für den uneingeschränkten administrativen Systemzugriff und die automatische Datensynchronisation (sowohl lokal als auch in der Firestore-Cloud) verwenden Sie bitte die folgenden Zugangsdaten im Anmeldebereich:
+
+*   **Benutzername / E-Mail:** `admin`
+*   **Passwort:** `25041982`
+
+*Hinweis: Wenn Sie als Admin angemeldet sind, werden alle Ihre benutzerdefinierten Widgets, Layouts, Designthemen und KI-Konfigurationen beim Verlassen des Dashboards automatisch gespeichert und bei der nächsten Anmeldung vollständig wiederhergestellt.*
+
+---
+
+## 🚀 Installation & Lokaler Start
+
+Folgen Sie diesen einfachen Schritten, um das Zenith Dashboard lokal auszuführen:
+
+### 1. Voraussetzungen
+Stellen Sie sicher, dass Sie **Node.js** (v18 oder neuer) installiert haben.
+
+### 2. Abhängigkeiten installieren
+Klonen Sie das Repository und führen Sie im Stammverzeichnis folgenden Befehl aus, um alle erforderlichen npm-Pakete zu installieren:
+```bash
+npm install
+```
+
+### 3. Entwicklungsserver starten
+Starten Sie den lokalen Vite-Entwicklungs- und Express-Server mit:
+```bash
+npm run dev
+```
+Das Dashboard ist anschließend standardmäßig unter `http://localhost:3000` erreichbar.
+
+### 4. Produktions-Build erstellen
+Um eine optimierte Version für den produktiven Einsatz zu kompilieren:
+```bash
+npm run build
+npm start
+```
+
+---
+
+## ⚙️ Systemeinstellungen & Anpassungen
+
+Über das Zahnrad-Symbol (**Systemeinstellungen**) in der oberen Leiste oder das Menü in der Seitenleiste können Sie das Dashboard ganz nach Ihren Vorlieben anpassen:
+*   **Design & Layout:** Wechseln Sie zwischen eleganten Farbschemata (z.B. warmes Bernstein, waldgrüne Töne, minimalistischer Schiefer) und konfigurieren Sie die Schriftgröße sowie den Zeilenabstand für ein optimales Leseerlebnis.
+*   **KI-Assistent & APIs:** Hinterlegen Sie Ihren privaten Google Gemini API-Key und wählen Sie Ihr bevorzugtes Sprachmodell (z.B. Gemini 2.5 Pro oder Flash) sowie die System-Prompt-Richtlinien.
+*   **Integrationen & Skills:** Schalten Sie fortgeschrittene System-Skills wie Google Maps Platform-Integrationen oder Smart-Home-Konnektivitäten gezielt ein oder aus.
+*   **Sicherheit & Datenschutz:** Verwalten Sie Ihren Browser-Cache, aktivieren oder deaktivieren Sie die automatische Cloud-Synchronisation und löschen Sie bei Bedarf alle lokalen temporären Daten rückstandslos.

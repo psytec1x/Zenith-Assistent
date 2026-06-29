@@ -1,0 +1,6 @@
+{
+  "name": "KI-Assistent-Dashboard",
+  "description": "Ein anpassbares, KI-gestütztes Dashboard für persönliche Assistenten mit Widgets, Notizen, Lesezeichen, Sprachsteuerung und API-Integrationen.",
+  "requestFramePermissions": ["microphone", "geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

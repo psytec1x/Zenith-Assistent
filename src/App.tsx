@@ -56,6 +56,9 @@ import MeetingAssistantWidget from "./components/MeetingAssistantWidget";
 import MapsItineraryWidget from "./components/MapsItineraryWidget";
 import ContentBlockEditor from "./components/ContentBlockEditor";
 import SettingsModal from "./components/SettingsModal";
+import PomodoroWidget from "./components/PomodoroWidget";
+import FinanceWidget from "./components/FinanceWidget";
+import WeatherWidget from "./components/WeatherWidget";
 
 // UI elements & motion
 import { motion, AnimatePresence } from "motion/react";
@@ -94,7 +97,12 @@ import {
   Type,
   Cpu,
   Layers,
-  Database
+  Database,
+  Clock,
+  Coins,
+  CloudSun,
+  Monitor,
+  Smartphone
 } from "lucide-react";
 
 interface AlertLog {
@@ -118,7 +126,7 @@ interface WidgetCatalogItem {
 const WIDGET_CATALOG: WidgetCatalogItem[] = [
   {
     type: "ai-chat",
-    title: "Persönlicher KI-Agent",
+    title: "KI-Agent",
     description: "Unterhalte dich mit einem intelligenten Assistenten, stelle Fragen oder brainstorme Ideen.",
     category: "KI & Agenten",
     icon: "Bot",
@@ -127,7 +135,7 @@ const WIDGET_CATALOG: WidgetCatalogItem[] = [
   },
   {
     type: "writing-assistant",
-    title: "KI Schreib-Assistent",
+    title: "Schreib-KI",
     description: "Lass Texte umschreiben, korrigieren oder neue kreative Entwürfe erstellen.",
     category: "KI & Agenten",
     icon: "Sparkles",
@@ -136,7 +144,7 @@ const WIDGET_CATALOG: WidgetCatalogItem[] = [
   },
   {
     type: "news-bias",
-    title: "News Bias Analyzer",
+    title: "News-Bias",
     description: "Sammle aktuelle Schlagzeilen und analysiere Nachrichtenartikel auf journalistische Voreingenommenheit.",
     category: "KI & Agenten",
     icon: "FileText",
@@ -145,7 +153,7 @@ const WIDGET_CATALOG: WidgetCatalogItem[] = [
   },
   {
     type: "meeting-assistant",
-    title: "Meeting Assistant",
+    title: "Meeting-Assistent",
     description: "Nimm Audiospur auf, transkribiere Gespräche und leite Action-Items ab.",
     category: "KI & Agenten",
     icon: "Mic",
@@ -154,7 +162,7 @@ const WIDGET_CATALOG: WidgetCatalogItem[] = [
   },
   {
     type: "email-inbox",
-    title: "KI E-Mail Postfach",
+    title: "E-Mail",
     description: "Verwalte dein intelligentes Postfach mit Zusammenfassungen und Antwort-Vorschlägen.",
     category: "KI & Agenten",
     icon: "Mail",
@@ -163,7 +171,7 @@ const WIDGET_CATALOG: WidgetCatalogItem[] = [
   },
   {
     type: "todo",
-    title: "NLP Aufgabenliste",
+    title: "Aufgaben",
     description: "Verwalte Aufgaben. Erkennt automatisch Prioritäten und Fälligkeiten aus natürlicher Sprache.",
     category: "Organisation",
     icon: "CheckCircle",
@@ -172,7 +180,7 @@ const WIDGET_CATALOG: WidgetCatalogItem[] = [
   },
   {
     type: "calendar",
-    title: "Terminkalender",
+    title: "Kalender",
     description: "Behalte deine tägliche Agenda und Termine im Blick, verknüpft mit Aufgaben.",
     category: "Organisation",
     icon: "Calendar",
@@ -181,7 +189,7 @@ const WIDGET_CATALOG: WidgetCatalogItem[] = [
   },
   {
     type: "contacts-manager",
-    title: "Kontakt-Netzwerk / CRM",
+    title: "CRM & Kontakte",
     description: "Pflege deine Beziehungen und visualisiere Verbindungen in einem Beziehungsnetzwerk.",
     category: "Organisation",
     icon: "User",
@@ -190,7 +198,7 @@ const WIDGET_CATALOG: WidgetCatalogItem[] = [
   },
   {
     type: "maps-itinerary",
-    title: "Google Maps Reisebegleiter",
+    title: "Reisebegleiter",
     description: "Erstelle Reiserouten, entdecke Sehenswürdigkeiten und nutze den Echtzeit-Übersetzer.",
     category: "Organisation",
     icon: "Map",
@@ -199,7 +207,7 @@ const WIDGET_CATALOG: WidgetCatalogItem[] = [
   },
   {
     type: "bookmarks",
-    title: "Google Bookmarks",
+    title: "Lesezeichen",
     description: "Speichere wichtige Lesezeichen mit Ordnern und importiere deine echten Chrome-Lesezeichen.",
     category: "Medien & Links",
     icon: "Bookmark",
@@ -208,7 +216,7 @@ const WIDGET_CATALOG: WidgetCatalogItem[] = [
   },
   {
     type: "quick-links",
-    title: "Schnellzugriff-Links",
+    title: "Schnelllinks",
     description: "Richte eine Sammlung von Schnelllinks für deine meistbesuchten Webseiten ein.",
     category: "Medien & Links",
     icon: "LayoutDashboard",
@@ -217,7 +225,7 @@ const WIDGET_CATALOG: WidgetCatalogItem[] = [
   },
   {
     type: "smart-home",
-    title: "Smart Home Hub",
+    title: "Smart Home",
     description: "Simuliere die Steuerung und Automatisierung von Smart Home Bluetooth-Geräten.",
     category: "Utilities",
     icon: "Moon",
@@ -226,12 +234,39 @@ const WIDGET_CATALOG: WidgetCatalogItem[] = [
   },
   {
     type: "music-player",
-    title: "Musik & Audio-Synth",
-    description: "Spiele Ambient-Tracks ab oder komponiere Melodien mit dem interaktiven Synthesizer.",
-    category: "Utilities",
+    title: "Musik-Player",
+    description: "Spiele Musikplaylists von Spotify, YouTube und SoundCloud per URL-Eingabe oder intelligenter Suche ab.",
+    category: "Medien & Links",
     icon: "Music",
     iconColor: "text-pink-400",
     color: "violet",
+  },
+  {
+    type: "pomodoro",
+    title: "Pomodoro",
+    description: "Optimiere deine Produktivität mit Intervallsitzungen und wählbaren Natur-Soundscapes.",
+    category: "Organisation",
+    icon: "Clock",
+    iconColor: "text-amber-500",
+    color: "amber",
+  },
+  {
+    type: "finance",
+    title: "Finanzen",
+    description: "Behalte Live-Kurse wie EUR, USD, Gold und Bitcoin mit interaktiven Sparkline-Charts im Blick.",
+    category: "Utilities",
+    icon: "Coins",
+    iconColor: "text-emerald-400",
+    color: "emerald",
+  },
+  {
+    type: "weather",
+    title: "Wetter",
+    description: "Sief das aktuelle Wetter und eine 3-Tage-Vorschau wichtiger europäischer Großstädte.",
+    category: "Utilities",
+    icon: "CloudSun",
+    iconColor: "text-sky-400",
+    color: "blue",
   }
 ];
 
@@ -250,8 +285,21 @@ const getIconComponent = (iconName: string) => {
     case "LayoutDashboard": return LayoutDashboard;
     case "Moon": return Moon;
     case "Music": return Music;
+    case "Clock": return Clock;
+    case "Coins": return Coins;
+    case "CloudSun": return CloudSun;
     default: return LayoutDashboard;
   }
+};
+
+const getIconComponentForWidget = (type: string) => {
+  const item = WIDGET_CATALOG.find(w => w.type === type);
+  return item ? getIconComponent(item.icon) : LayoutDashboard;
+};
+
+const getIconColorForWidget = (type: string) => {
+  const item = WIDGET_CATALOG.find(w => w.type === type);
+  return item ? item.iconColor : "text-gray-400";
 };
 
 const THEME_MAP: Record<string, { bg: string; panel: string; text: string; textMuted: string; borderColor: string; bgGradient: string }> = {
@@ -367,7 +415,13 @@ export default function App() {
 
   // App Settings state
   const [settings, setSettings] = useState<AppSettings>(DEFAULT_SETTINGS);
+  const [previewMode, setPreviewMode] = useState<"desktop" | "android">("desktop");
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [showPageOptionsModal, setShowPageOptionsModal] = useState(false);
+  const [newPageTitle, setNewPageTitle] = useState("Neue Unterseite");
+  const [newPageIcon, setNewPageIcon] = useState("BookOpen");
+  const [newPageTemplate, setNewPageTemplate] = useState("notes");
+  const [newPageCount, setNewPageCount] = useState(1);
 
   // Custom Cover image state
   const [showCoverModal, setShowCoverModal] = useState(false);
@@ -376,6 +430,60 @@ export default function App() {
   // Widget catalog search/category states
   const [widgetSearchQuery, setWidgetSearchQuery] = useState("");
   const [selectedWidgetCategory, setSelectedWidgetCategory] = useState("Alle");
+  const [isWidgetCatalogExpanded, setIsWidgetCatalogExpanded] = useState(true);
+
+  // Drag and Drop states for widgets
+  const [draggedWidgetId, setDraggedWidgetId] = useState<string | null>(null);
+  const [dragOverWidgetId, setDragOverWidgetId] = useState<string | null>(null);
+
+  const handleDragStart = (e: React.DragEvent, id: string) => {
+    setDraggedWidgetId(id);
+    e.dataTransfer.setData("text/plain", id);
+    e.dataTransfer.effectAllowed = "move";
+  };
+
+  const handleDragOver = (e: React.DragEvent, id: string) => {
+    e.preventDefault();
+    if (draggedWidgetId && draggedWidgetId !== id) {
+      setDragOverWidgetId(id);
+    }
+  };
+
+  const handleDragEnd = () => {
+    setDraggedWidgetId(null);
+    setDragOverWidgetId(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, targetId: string) => {
+    e.preventDefault();
+    const draggedId = e.dataTransfer.getData("text/plain") || draggedWidgetId;
+    if (draggedId && draggedId !== targetId) {
+      handleReorderWidgets(draggedId, targetId);
+    }
+    setDraggedWidgetId(null);
+    setDragOverWidgetId(null);
+  };
+
+  const handleReorderWidgets = (draggedId: string, targetId: string) => {
+    if (draggedId === targetId) return;
+    setPages((prevPages) => {
+      const updated = prevPages.map((page) => {
+        if (page.id !== activePageId) return page;
+        const widgets = [...page.widgets];
+        const draggedIndex = widgets.findIndex((w) => w.id === draggedId);
+        const targetIndex = widgets.findIndex((w) => w.id === targetId);
+        if (draggedIndex === -1 || targetIndex === -1) return page;
+
+        const [draggedWidget] = widgets.splice(draggedIndex, 1);
+        widgets.splice(targetIndex, 0, draggedWidget);
+
+        return { ...page, widgets };
+      });
+      saveData(updated, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, activePageId);
+      return updated;
+    });
+    addSystemLog("Widgets neu angeordnet.", "low");
+  };
 
   // Voice control states
   const [isListeningForVoice, setIsListeningForVoice] = useState(false);
@@ -622,22 +730,11 @@ export default function App() {
   const handleAddWidget = (type: DashboardWidget["type"]) => {
     if (!activePage) return;
 
+    const catalogItem = WIDGET_CATALOG.find((w) => w.type === type);
     const newWidget: DashboardWidget = {
       id: "w-" + Date.now(),
       type,
-      title: 
-        type === "ai-chat" ? "Persönlicher KI-Agent" :
-        type === "todo" ? "Aufgaben" :
-        type === "calendar" ? "Terminkalender" :
-        type === "bookmarks" ? "Bookmarks" :
-        type === "smart-home" ? "Smart Home Bluetooth" :
-        type === "music-player" ? "Intelligente Musik" :
-        type === "email-inbox" ? "KI E-Mail Postfach" :
-        type === "writing-assistant" ? "KI Schreib-Assistent" :
-        type === "contacts-manager" ? "Kontakt Netzwerk" :
-        type === "meeting-assistant" ? "Besprechungsassistent" :
-        type === "maps-itinerary" ? "Reisebegleiter & Übersetzung" :
-        "Neues Widget",
+      title: catalogItem ? catalogItem.title : "Neues Widget",
       w: 2,
       h: type === "maps-itinerary" || type === "todo" || type === "ai-chat" ? 2 : 1,
       color: "slate"
@@ -707,25 +804,59 @@ export default function App() {
   };
 
   // Add new Custom Page
-  const handleAddNewPage = () => {
-    const pageId = "page-" + Date.now();
-    const newPage: DashboardPage = {
-      id: pageId,
-      title: "Neue Unterseite",
-      icon: "BookOpen",
-      widgets: [],
-      subpages: [],
-      headerImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
-      contentBlocks: [
-        { id: "cb-init-" + Date.now(), type: "text", value: "Notizen, HTML Visualisierungen oder Codesprachen können hier hinzugefügt werden." }
-      ]
-    };
+  const handleAddNewPage = (options?: { 
+    title?: string; 
+    icon?: string; 
+    isEmpty?: boolean; 
+    count?: number; 
+    prefilledWidgets?: DashboardWidget["type"][] 
+  }) => {
+    const count = options?.count || 1;
+    let updatedPages = [...pages];
+    let lastPageId = "";
 
-    const updatedPages = [...pages, newPage];
+    for (let i = 0; i < count; i++) {
+      const pageId = "page-" + Date.now() + "-" + i;
+      const displayTitle = count > 1 
+        ? `${options?.title || "Leere Seite"} ${i + 1}` 
+        : (options?.title || "Neue Unterseite");
+      
+      const newWidgets: DashboardWidget[] = [];
+      if (options?.prefilledWidgets) {
+        options.prefilledWidgets.forEach((wType, index) => {
+          newWidgets.push({
+            id: `widget-${wType}-${Date.now()}-${index}`,
+            type: wType,
+            title: wType === "ai-chat" ? "Persönlicher KI-Agent" : wType === "todo" ? "Aufgabenliste" : wType === "pomodoro" ? "Focus Timer" : "Widget",
+            w: 2,
+            h: 2,
+            color: "slate"
+          });
+        });
+      }
+
+      const newPage: DashboardPage = {
+        id: pageId,
+        title: displayTitle,
+        icon: options?.icon || "BookOpen",
+        widgets: newWidgets,
+        subpages: [],
+        headerImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
+        contentBlocks: options?.isEmpty 
+          ? [] 
+          : [
+              { id: "cb-init-" + Date.now() + "-" + i, type: "text", value: "Notizen, HTML Visualisierungen oder Codesprachen können hier hinzugefügt werden." }
+            ]
+      };
+
+      updatedPages.push(newPage);
+      lastPageId = pageId;
+    }
+
     setPages(updatedPages);
-    setActivePageId(pageId);
-    saveData(updatedPages, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, pageId);
-    addSystemLog(`Neue Notion-artige Seite "${newPage.title}" erstellt.`, "low");
+    setActivePageId(lastPageId);
+    saveData(updatedPages, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, lastPageId);
+    addSystemLog(`${count} neue Seite(n) erstellt.`, "low");
   };
 
   // Delete Custom Page
@@ -1049,23 +1180,11 @@ export default function App() {
 
   const unreadLogsCount = logs.filter((l) => !l.read).length;
 
-  return (
-    <div 
-      className="min-h-screen bg-[var(--bg-color)] text-[var(--text-color)] flex font-sans overflow-x-hidden antialiased"
-      style={{
-        "--bg-color": THEME_MAP[settings.theme]?.bg || "#0A0B0E",
-        "--panel-color": THEME_MAP[settings.theme]?.panel || "#111318",
-        "--text-color": THEME_MAP[settings.theme]?.text || "#D1D5DB",
-        "--text-muted": THEME_MAP[settings.theme]?.textMuted || "#9CA3AF",
-        "--border-color": THEME_MAP[settings.theme]?.borderColor || "rgba(255, 255, 255, 0.05)",
-        "--color-gold": ACCENT_COLOR_MAP[settings.accentColor] || "#C5A059",
-        "--color-gold-dark": ACCENT_COLOR_DARK_MAP[settings.accentColor] || "#8B7344",
-        "--font-sans": FONT_MAP[settings.primaryFont] || "'Inter', sans-serif",
-        background: settings.backgroundType === "gradient" ? THEME_MAP[settings.theme]?.bgGradient : THEME_MAP[settings.theme]?.bg,
-        fontSize: settings.fontSize === "small" ? "13px" : settings.fontSize === "large" ? "16px" : "14px",
-        lineHeight: settings.lineSpacing === "compact" ? "1.25" : settings.lineSpacing === "spacious" ? "1.75" : "1.5",
-      } as React.CSSProperties}
-    >
+  const isAndroid = previewMode === "android";
+
+  const renderInnerLayout = () => {
+    return (
+      <div className={`flex flex-1 w-full min-w-0 relative ${isAndroid ? "h-full bg-[var(--bg-color)]" : ""}`}>
       
       {/* Notion Sidebar Panel */}
       <AnimatePresence>
@@ -1113,42 +1232,83 @@ export default function App() {
                 {pages.map((p) => {
                   const isActive = p.id === activePageId;
                   return (
-                    <div
-                      key={p.id}
-                      className={`group/page flex items-center justify-between rounded-lg p-2.5 transition-all ${
-                        isActive
-                          ? "bg-white/5 border border-gold/20 text-white font-medium"
-                          : "text-slate-400 hover:text-white hover:bg-white/5 border border-transparent"
-                      }`}
-                    >
-                      <button
-                        onClick={() => setActivePageId(p.id)}
-                        className={`flex items-center space-x-2.5 flex-1 min-w-0 text-left text-xs ${isActive ? "text-white font-semibold" : "text-slate-400"}`}
+                    <div key={p.id} className="space-y-0.5">
+                      <div
+                        className={`group/page flex items-center justify-between rounded-lg p-2.5 transition-all ${
+                          isActive
+                            ? "bg-white/5 border border-gold/20 text-white font-medium"
+                            : "text-slate-400 hover:text-white hover:bg-white/5 border border-transparent"
+                        }`}
                       >
-                        {isActive ? (
-                          <div className="w-1.5 h-1.5 rounded-full bg-gold shrink-0"></div>
-                        ) : (
-                          p.icon === "LayoutDashboard" ? <LayoutDashboard size={13} className="text-gray-500" /> : <BookOpen size={13} className="text-gray-500" />
-                        )}
-                        <span className="truncate">{p.title}</span>
-                      </button>
-
-                      {/* Delete Custom Pages */}
-                      {pages.length > 1 && (
                         <button
-                          onClick={() => handleDeletePage(p.id)}
-                          className="opacity-0 group-hover/page:opacity-100 text-slate-500 hover:text-rose-400 p-0.5 rounded transition-opacity"
-                          title="Seite löschen"
+                          onClick={() => setActivePageId(p.id)}
+                          className={`flex items-center space-x-2.5 flex-1 min-w-0 text-left text-xs ${isActive ? "text-white font-semibold" : "text-slate-400"}`}
                         >
-                          <X size={12} />
+                          {isActive ? (
+                            <div className="w-1.5 h-1.5 rounded-full bg-gold shrink-0 animate-pulse"></div>
+                          ) : (
+                            p.icon === "LayoutDashboard" ? <LayoutDashboard size={13} className="text-gray-500" /> : <BookOpen size={13} className="text-gray-500" />
+                          )}
+                          <span className="truncate">{p.title}</span>
                         </button>
+
+                        {/* Delete Custom Pages */}
+                        {pages.length > 1 && (
+                          <button
+                            onClick={() => handleDeletePage(p.id)}
+                            className="opacity-0 group-hover/page:opacity-100 text-slate-500 hover:text-rose-400 p-0.5 rounded transition-opacity"
+                            title="Seite löschen"
+                          >
+                            <X size={12} />
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Nest widgets under each page */}
+                      {p.widgets && p.widgets.length > 0 && (
+                        <div className="pl-4 pr-1 py-1 space-y-1 border-l border-white/5 ml-3.5 mb-1.5 animate-fadeIn">
+                          {p.widgets.map((widget) => {
+                            const IconComponent = getIconComponentForWidget(widget.type);
+                            const iconColor = getIconColorForWidget(widget.type);
+                            return (
+                              <button
+                                key={widget.id}
+                                onClick={() => {
+                                  // Switch page if needed
+                                  if (p.id !== activePageId) {
+                                    setActivePageId(p.id);
+                                  }
+                                  // Scroll the widget into view and flash highlight it
+                                  setTimeout(() => {
+                                    const el = document.getElementById(`widget-${widget.id}`);
+                                    if (el) {
+                                      el.scrollIntoView({ behavior: "smooth", block: "center" });
+                                      el.classList.add("ring-2", "ring-gold", "duration-500");
+                                      setTimeout(() => {
+                                        el.classList.remove("ring-2", "ring-gold");
+                                      }, 1500);
+                                    }
+                                  }, 100);
+                                }}
+                                className="w-full flex items-center justify-between text-[11px] text-slate-500 hover:text-white transition-colors py-1 px-1.5 rounded hover:bg-white/5 text-left group/widget"
+                              >
+                                <span className="flex items-center space-x-2 truncate">
+                                  <IconComponent size={11} className={`${iconColor} opacity-70 group-hover/widget:opacity-100 shrink-0`} />
+                                  <span className="truncate font-sans text-slate-400 group-hover/widget:text-slate-200">
+                                    {widget.title || widget.type}
+                                  </span>
+                                </span>
+                              </button>
+                            );
+                          })}
+                        </div>
                       )}
                     </div>
                   );
                 })}
 
                 <button
-                  onClick={handleAddNewPage}
+                  onClick={() => setShowPageOptionsModal(true)}
                   className="w-full flex items-center space-x-2 px-2.5 py-2 hover:bg-white/5 text-gray-500 hover:text-gold border border-dashed border-white/5 rounded-lg text-left text-xs transition-colors"
                 >
                   <Plus size={14} />
@@ -1252,7 +1412,7 @@ export default function App() {
       <div className="flex-1 flex flex-col h-screen min-w-0">
         
         {/* Universal Top Dashboard Header */}
-        <header className="h-20 border-b border-white/5 px-8 flex items-center justify-between bg-[#111318]/20 shrink-0">
+        <header className={`${previewMode === "android" ? "h-16 px-4" : "h-20 px-8"} border-b border-white/5 flex items-center justify-between bg-[#111318]/20 shrink-0`}>
           <div className="flex items-center space-x-4">
             {!sidebarOpen && (
               <button
@@ -1272,52 +1432,92 @@ export default function App() {
                   type="text"
                   value={activePage ? activePage.title : "Unbenannt"}
                   onChange={(e) => handlePageTitleChange(e.target.value)}
-                  className="bg-transparent text-lg font-serif text-white focus:outline-none focus:border-b focus:border-gold/30 rounded px-1 min-w-[200px]"
+                  className={`bg-transparent font-serif text-white focus:outline-none focus:border-b focus:border-gold/30 rounded px-1 ${
+                    previewMode === "android" ? "text-sm min-w-[100px] max-w-[125px]" : "text-lg min-w-[200px]"
+                  }`}
                 />
               </div>
             </div>
           </div>
 
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4">
             
-            {/* Quick Share anchor */}
-            <button
-              onClick={() => setShowShareModal(true)}
-              className="px-5 py-1.5 border border-white/10 rounded-full text-xs text-slate-300 hover:bg-white/5 transition-colors font-mono"
-            >
-              Teilen
-            </button>
+            {/* Viewport Switcher */}
+            <div className="flex bg-black/40 border border-white/5 p-1 rounded-full text-xs shrink-0 mr-1 sm:mr-2">
+              <button
+                onClick={() => {
+                  setPreviewMode("desktop");
+                  addSystemLog("Ansicht gewechselt: Desktop", "low");
+                }}
+                className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-full transition-all ${
+                  previewMode === "desktop"
+                    ? "bg-gold text-black font-bold shadow-md shadow-gold/10"
+                    : "text-slate-400 hover:text-white"
+                }`}
+                title="Desktop-Ansicht"
+              >
+                <Monitor size={12} />
+                <span className="hidden md:inline text-[10px]">Desktop</span>
+              </button>
+              <button
+                onClick={() => {
+                  setPreviewMode("android");
+                  addSystemLog("Ansicht gewechselt: Android (Mobil)", "low");
+                }}
+                className={`flex items-center space-x-1.5 px-2.5 py-1 rounded-full transition-all ${
+                  previewMode === "android"
+                    ? "bg-gold text-black font-bold shadow-md shadow-gold/10"
+                    : "text-slate-400 hover:text-white"
+                }`}
+                title="Android-Mobil-Ansicht"
+              >
+                <Smartphone size={12} />
+                <span className="hidden md:inline text-[10px]">Android</span>
+              </button>
+            </div>
 
-            {/* Voice Control Toggle Button */}
-            <button
-              onClick={() => {
-                setShowVoicePanel(!showVoicePanel);
-                if (showVoicePanel) {
-                  stopVoiceRecognition();
-                } else {
-                  startVoiceRecognition();
-                }
-              }}
-              className={`flex items-center space-x-1.5 px-5 py-1.5 border rounded-full text-xs font-mono transition-all ${
-                isListeningForVoice
-                  ? "bg-rose-950/30 border-rose-600/50 text-rose-400 animate-pulse shadow-[0_0_15px_rgba(225,29,72,0.3)]"
-                  : showVoicePanel
-                  ? "bg-gold/15 border-gold/40 text-gold"
-                  : "border-white/10 text-slate-300 hover:bg-white/5"
-              }`}
-              title="Sprachsteuerung umschalten"
-            >
-              {isListeningForVoice ? <Mic className="animate-bounce text-rose-400" size={13} /> : <Mic size={13} />}
-              <span>Voice Control</span>
-            </button>
+            {previewMode !== "android" && (
+              <>
+                {/* Quick Share anchor */}
+                <button
+                  onClick={() => setShowShareModal(true)}
+                  className="px-5 py-1.5 border border-white/10 rounded-full text-xs text-slate-300 hover:bg-white/5 transition-colors font-mono"
+                >
+                  Teilen
+                </button>
 
-            {/* Markdown Export Report Button */}
-            <button
-              onClick={handleExportMarkdown}
-              className="px-5 py-1.5 bg-[#C5A059] text-black font-semibold rounded-full text-xs hover:bg-[#b08e4d] transition-colors"
-            >
-              Bericht exportieren
-            </button>
+                {/* Voice Control Toggle Button */}
+                <button
+                  onClick={() => {
+                    setShowVoicePanel(!showVoicePanel);
+                    if (showVoicePanel) {
+                      stopVoiceRecognition();
+                    } else {
+                      startVoiceRecognition();
+                    }
+                  }}
+                  className={`flex items-center space-x-1.5 px-5 py-1.5 border rounded-full text-xs font-mono transition-all ${
+                    isListeningForVoice
+                      ? "bg-rose-950/30 border-rose-600/50 text-rose-400 animate-pulse shadow-[0_0_15px_rgba(225,29,72,0.3)]"
+                      : showVoicePanel
+                      ? "bg-gold/15 border-gold/40 text-gold"
+                      : "border-white/10 text-slate-300 hover:bg-white/5"
+                  }`}
+                  title="Sprachsteuerung umschalten"
+                >
+                  {isListeningForVoice ? <Mic className="animate-bounce text-rose-400" size={13} /> : <Mic size={13} />}
+                  <span>Voice Control</span>
+                </button>
+
+                {/* Markdown Export Report Button */}
+                <button
+                  onClick={handleExportMarkdown}
+                  className="px-5 py-1.5 bg-[#C5A059] text-black font-semibold rounded-full text-xs hover:bg-[#b08e4d] transition-colors"
+                >
+                  Bericht exportieren
+                </button>
+              </>
+            )}
 
             {/* Priorities Alarm Log Notification bell */}
             <div className="relative">
@@ -1563,104 +1763,125 @@ export default function App() {
           {activePage && (
             <section className="space-y-4 bg-slate-950/30 border border-white/5 rounded-2xl p-6 shadow-xl backdrop-blur-md">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-white/5">
-                <div>
-                  <span className="text-[10px] font-bold text-gold uppercase tracking-[0.25em] font-mono block mb-1">
-                    Workspace-Anpassung
-                  </span>
-                  <h3 className="text-sm font-serif text-white tracking-wide flex items-center space-x-1.5 italic">
-                    <Plus size={14} className="text-gold animate-pulse" />
-                    <span>Widget & Integrationsverzeichnis</span>
-                  </h3>
+                <div className="flex justify-between items-center w-full md:w-auto">
+                  <div>
+                    <span className="text-[10px] font-bold text-gold uppercase tracking-[0.25em] font-mono block mb-1">
+                      Workspace-Anpassung
+                    </span>
+                    <h3 className="text-sm font-serif text-white tracking-wide flex items-center space-x-1.5 italic">
+                      <Plus size={14} className="text-gold animate-pulse" />
+                      <span>Widget & Integrationsverzeichnis</span>
+                    </h3>
+                  </div>
+                  <button
+                    onClick={() => setIsWidgetCatalogExpanded(!isWidgetCatalogExpanded)}
+                    className="md:hidden px-3 py-1 bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white rounded-lg text-[10px] font-mono border border-white/5 transition-all"
+                  >
+                    {isWidgetCatalogExpanded ? "Einklappen ▲" : "Ausklappen ▼"}
+                  </button>
                 </div>
 
                 {/* Search & Categories container */}
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                  <button
+                    onClick={() => setIsWidgetCatalogExpanded(!isWidgetCatalogExpanded)}
+                    className="hidden md:flex items-center space-x-1.5 px-3 py-1.5 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white rounded-lg text-[10px] font-mono border border-white/5 transition-all"
+                  >
+                    <span>{isWidgetCatalogExpanded ? "Verzeichnis einklappen ▲" : "Verzeichnis ausklappen ▼"}</span>
+                  </button>
+
                   {/* Search bar */}
-                  <div className="relative">
-                    <Search className="absolute left-3 top-2.5 text-slate-500" size={13} />
-                    <input
-                      type="text"
-                      placeholder="Nach Widgets filtern..."
-                      value={widgetSearchQuery}
-                      onChange={(e) => setWidgetSearchQuery(e.target.value)}
-                      className="w-full sm:w-56 bg-black/40 border border-white/5 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-gold/30 font-sans transition-all"
-                    />
-                    {widgetSearchQuery && (
-                      <button 
-                        onClick={() => setWidgetSearchQuery("")}
-                        className="absolute right-2.5 top-2 text-slate-500 hover:text-white text-[10px] font-bold"
-                      >
-                        ✕
-                      </button>
-                    )}
-                  </div>
+                  {isWidgetCatalogExpanded && (
+                    <div className="relative">
+                      <Search className="absolute left-3 top-2.5 text-slate-500" size={13} />
+                      <input
+                        type="text"
+                        placeholder="Nach Widgets filtern..."
+                        value={widgetSearchQuery}
+                        onChange={(e) => setWidgetSearchQuery(e.target.value)}
+                        className="w-full sm:w-56 bg-black/40 border border-white/5 rounded-lg pl-9 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-gold/30 font-sans transition-all"
+                      />
+                      {widgetSearchQuery && (
+                        <button 
+                          onClick={() => setWidgetSearchQuery("")}
+                          className="absolute right-2.5 top-2 text-slate-500 hover:text-white text-[10px] font-bold"
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* Category selector */}
-              <div className="flex flex-wrap gap-1.5">
-                {["Alle", "KI & Agenten", "Organisation", "Medien & Links", "Utilities"].map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedWidgetCategory(cat)}
-                    className={`px-3 py-1 rounded-full text-[10px] font-semibold transition-all border ${
-                      selectedWidgetCategory === cat
-                        ? "bg-gold border-transparent text-black font-bold shadow-lg shadow-gold/10"
-                        : "bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border-white/5"
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-
-              {/* Widgets Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 pt-2">
-                {filteredCatalog.length === 0 ? (
-                  <div className="col-span-full py-8 text-center text-slate-500 font-mono text-[11px] border border-dashed border-white/5 rounded-xl bg-black/10">
-                    Keine Widgets entsprechen deiner Suche.
-                  </div>
-                ) : (
-                  filteredCatalog.map((item) => {
-                    const IconComponent = getIconComponent(item.icon);
-                    return (
-                      <div
-                        key={item.type}
-                        onClick={() => handleAddWidget(item.type)}
-                        className="group bg-black/30 hover:bg-black/50 border border-white/5 hover:border-gold/40 rounded-xl p-4 cursor-pointer transition-all duration-300 flex flex-col justify-between space-y-3 relative overflow-hidden shadow-md"
+              {isWidgetCatalogExpanded && (
+                <div className="space-y-4 animate-fadeIn">
+                  {/* Category selector */}
+                  <div className="flex flex-wrap gap-1.5">
+                    {["Alle", "KI & Agenten", "Organisation", "Medien & Links", "Utilities"].map((cat) => (
+                      <button
+                        key={cat}
+                        onClick={() => setSelectedWidgetCategory(cat)}
+                        className={`px-3 py-1 rounded-full text-[10px] font-semibold transition-all border ${
+                          selectedWidgetCategory === cat
+                            ? "bg-gold border-transparent text-black font-bold shadow-lg shadow-gold/10"
+                            : "bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white border-white/5"
+                        }`}
                       >
-                        {/* Hover overlay border */}
-                        <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-gold/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                        
-                        <div className="space-y-1.5">
-                          <div className="flex items-center space-x-2.5">
-                            <div className={`p-2 rounded-lg bg-white/5 shrink-0 ${item.iconColor}`}>
-                              <IconComponent size={14} />
-                            </div>
-                            <span className="font-serif text-xs font-semibold text-white tracking-wide group-hover:text-gold transition-colors">
-                              {item.title}
-                            </span>
-                          </div>
-                          
-                          <p className="text-[10px] text-slate-400 leading-relaxed font-sans line-clamp-2">
-                            {item.description}
-                          </p>
-                        </div>
+                        {cat}
+                      </button>
+                    ))}
+                  </div>
 
-                        <div className="flex items-center justify-between pt-1 border-t border-white/5">
-                          <span className="text-[8px] font-mono text-slate-500 bg-white/5 px-2 py-0.5 rounded border border-white/5">
-                            {item.category}
-                          </span>
-                          
-                          <span className="text-[9px] font-bold text-slate-400 group-hover:text-gold transition-colors flex items-center space-x-0.5 font-mono">
-                            <span>+ Hinzufügen</span>
-                          </span>
-                        </div>
+                  {/* Widgets Grid */}
+                  <div className={`grid gap-4 pt-2 ${isAndroid ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"}`}>
+                    {filteredCatalog.length === 0 ? (
+                      <div className="col-span-full py-8 text-center text-slate-500 font-mono text-[11px] border border-dashed border-white/5 rounded-xl bg-black/10">
+                        Keine Widgets entsprechen deiner Suche.
                       </div>
-                    );
-                  })
-                )}
-              </div>
+                    ) : (
+                      filteredCatalog.map((item) => {
+                        const IconComponent = getIconComponent(item.icon);
+                        return (
+                          <div
+                            key={item.type}
+                            onClick={() => handleAddWidget(item.type)}
+                            className="group bg-black/30 hover:bg-black/50 border border-white/5 hover:border-gold/40 rounded-xl p-4 cursor-pointer transition-all duration-300 flex flex-col justify-between space-y-3 relative overflow-hidden shadow-md"
+                          >
+                            {/* Hover overlay border */}
+                            <div className="absolute inset-x-0 top-0 h-[1.5px] bg-gradient-to-r from-transparent via-gold/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            
+                            <div className="space-y-1.5">
+                              <div className="flex items-center space-x-2.5">
+                                <div className={`p-2 rounded-lg bg-white/5 shrink-0 ${item.iconColor}`}>
+                                  <IconComponent size={14} />
+                                </div>
+                                <span className="font-serif text-xs font-semibold text-white tracking-wide group-hover:text-gold transition-colors">
+                                  {item.title}
+                                </span>
+                              </div>
+                              
+                              <p className="text-[10px] text-slate-400 leading-relaxed font-sans line-clamp-2">
+                                {item.description}
+                              </p>
+                            </div>
+
+                            <div className="flex items-center justify-between pt-1 border-t border-white/5">
+                              <span className="text-[8px] font-mono text-slate-500 bg-white/5 px-2 py-0.5 rounded border border-white/5">
+                                {item.category}
+                              </span>
+                              
+                              <span className="text-[9px] font-bold text-slate-400 group-hover:text-gold transition-colors flex items-center space-x-0.5 font-mono">
+                                <span>+ Hinzufügen</span>
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                </div>
+              )}
             </section>
           )}
 
@@ -1668,7 +1889,7 @@ export default function App() {
           {activePage && (
             <section className="space-y-4">
               <div className="text-[10px] font-bold text-gold uppercase tracking-[0.2em] font-mono">Interaktives Kontrollzentrum :</div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+              <div className={`grid gap-6 ${isAndroid ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2 md:grid-cols-4"}`}>
                 <AnimatePresence>
                   {activePage.widgets.map((widget) => (
                     <WidgetWrapper
@@ -1676,6 +1897,13 @@ export default function App() {
                       widget={widget}
                       onUpdate={handleUpdateWidget}
                       onDelete={() => handleDeleteWidget(widget.id)}
+                      isMobile={isAndroid}
+                      onDragStart={handleDragStart}
+                      onDragOver={handleDragOver}
+                      onDragEnd={handleDragEnd}
+                      onDrop={handleDrop}
+                      isDragging={draggedWidgetId === widget.id}
+                      isDragOver={dragOverWidgetId === widget.id}
                     >
                       {widget.type === "ai-chat" && (
                         <AIChatWidget onAddLog={(log) => addSystemLog(log, "low")} />
@@ -1750,6 +1978,15 @@ export default function App() {
                       {widget.type === "maps-itinerary" && (
                         <MapsItineraryWidget />
                       )}
+                      {widget.type === "pomodoro" && (
+                        <PomodoroWidget />
+                      )}
+                      {widget.type === "finance" && (
+                        <FinanceWidget />
+                      )}
+                      {widget.type === "weather" && (
+                        <WeatherWidget />
+                      )}
                     </WidgetWrapper>
                   ))}
                 </AnimatePresence>
@@ -1758,6 +1995,42 @@ export default function App() {
           )}
         </main>
       </div>
+    </div>
+  );
+};
+
+  return (
+    <div 
+      className={`min-h-screen bg-[var(--bg-color)] text-[var(--text-color)] flex font-sans overflow-x-hidden antialiased ${
+        isAndroid 
+          ? "items-center justify-center py-10 px-4 bg-neutral-950 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-neutral-900/30 via-black to-black" 
+          : ""
+      }`}
+      style={{
+        "--bg-color": THEME_MAP[settings.theme]?.bg || "#0A0B0E",
+        "--panel-color": THEME_MAP[settings.theme]?.panel || "#111318",
+        "--text-color": THEME_MAP[settings.theme]?.text || "#D1D5DB",
+        "--text-muted": THEME_MAP[settings.theme]?.textMuted || "#9CA3AF",
+        "--border-color": THEME_MAP[settings.theme]?.borderColor || "rgba(255, 255, 255, 0.05)",
+        "--color-gold": ACCENT_COLOR_MAP[settings.accentColor] || "#C5A059",
+        "--color-gold-dark": ACCENT_COLOR_DARK_MAP[settings.accentColor] || "#8B7344",
+        "--font-sans": FONT_MAP[settings.primaryFont] || "'Inter', sans-serif",
+        background: isAndroid 
+          ? "none" 
+          : (settings.backgroundType === "gradient" ? THEME_MAP[settings.theme]?.bgGradient : THEME_MAP[settings.theme]?.bg),
+        fontSize: settings.fontSize === "small" ? "13px" : settings.fontSize === "large" ? "16px" : "14px",
+        lineHeight: settings.lineSpacing === "compact" ? "1.25" : settings.lineSpacing === "spacious" ? "1.75" : "1.5",
+      } as React.CSSProperties}
+    >
+      {isAndroid ? (
+        <div className="w-full h-screen sm:w-[390px] sm:h-[844px] bg-[var(--bg-color)] sm:rounded-[24px] sm:border sm:border-white/10 sm:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.95)] sm:ring-1 sm:ring-white/5 flex flex-col overflow-hidden relative animate-scaleIn">
+          <div className="flex-1 overflow-hidden relative">
+            {renderInnerLayout()}
+          </div>
+        </div>
+      ) : (
+        renderInnerLayout()
+      )}
 
       {/* Share/Embed modal popover */}
       {showShareModal && (
@@ -1948,6 +2221,182 @@ export default function App() {
           saveData(undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, undefined, DEFAULT_SETTINGS);
         }}
       />
+
+      {/* Page template & selection options modal */}
+      {showPageOptionsModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md p-4 animate-fadeIn">
+          <div className="bg-[#111318] border border-white/10 rounded-2xl p-6 shadow-2xl w-full max-w-md text-xs space-y-4">
+            <div className="flex justify-between items-center border-b border-white/5 pb-3">
+              <span className="font-serif italic text-sm text-gold flex items-center space-x-2">
+                <Plus size={16} className="text-gold shrink-0 animate-pulse" />
+                <span>Neue Seite konfigurieren</span>
+              </span>
+              <button 
+                onClick={() => setShowPageOptionsModal(false)} 
+                className="text-gray-400 hover:text-white p-1 text-sm font-bold"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="space-y-3.5 max-h-[420px] overflow-y-auto custom-scrollbar pr-1">
+              {/* Page Title */}
+              <div>
+                <label className="text-[10px] font-bold text-gold uppercase tracking-wider block font-mono mb-1">
+                  Seitentitel
+                </label>
+                <input
+                  type="text"
+                  placeholder="z.B. Lernecke, Arbeitsbereich..."
+                  value={newPageTitle}
+                  onChange={(e) => setNewPageTitle(e.target.value)}
+                  className="w-full bg-black/40 border border-white/5 rounded-lg px-3 py-2 text-xs text-slate-200 placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 font-sans"
+                />
+              </div>
+
+              {/* Icon Choice */}
+              <div>
+                <label className="text-[10px] font-bold text-gold uppercase tracking-wider block font-mono mb-1">
+                  Symbol / Icon wählen
+                </label>
+                <div className="flex gap-2">
+                  {[
+                    { key: "BookOpen", label: "📄 Buch" },
+                    { key: "LayoutDashboard", label: "📊 Dashboard" },
+                    { key: "Compass", label: "🧭 Kompass" },
+                    { key: "Star", label: "⭐ Stern" },
+                    { key: "Calendar", label: "📅 Kalender" }
+                  ].map((ic) => (
+                    <button
+                      key={ic.key}
+                      onClick={() => setNewPageIcon(ic.key)}
+                      className={`flex-1 py-1.5 rounded-lg border text-center text-[10px] transition-all font-sans ${
+                        newPageIcon === ic.key
+                          ? "bg-gold border-transparent text-black font-semibold"
+                          : "bg-white/5 border-white/5 text-slate-400 hover:text-white"
+                      }`}
+                    >
+                      {ic.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Template Choice */}
+              <div>
+                <label className="text-[10px] font-bold text-gold uppercase tracking-wider block font-mono mb-1">
+                  Vorlage / Inhaltstyp
+                </label>
+                <div className="space-y-2">
+                  {[
+                    { 
+                      key: "notes", 
+                      title: "Dokumenten- & Notizen-Vorlage", 
+                      desc: "Enthält ein Standard-Textblock für Dokumente und Mitschriften." 
+                    },
+                    { 
+                      key: "blank", 
+                      title: "Einzelne leere Seite", 
+                      desc: "Eine vollkommen leere Seite ohne vordefinierte Bausteine." 
+                    },
+                    { 
+                      key: "blank-multiple", 
+                      title: "Mehrere leere Seiten erstellen (Massen-Erstellung)", 
+                      desc: "Erstellt eine Serie von vollkommen leeren Seiten auf einmal." 
+                    },
+                    { 
+                      key: "ai", 
+                      title: "KI-Fokus Workspace", 
+                      desc: "Wird vorausgestattet mit KI-Chatbot, Schreibassistent und Pomodoro." 
+                    },
+                    { 
+                      key: "finance", 
+                      title: "Arbeits- & Finanzhub", 
+                      desc: "Wird vorausgestattet mit Aufgabenliste, Finanzticker und Wetter." 
+                    }
+                  ].map((tpl) => (
+                    <div
+                      key={tpl.key}
+                      onClick={() => setNewPageTemplate(tpl.key)}
+                      className={`p-2.5 rounded-lg border cursor-pointer transition-all ${
+                        newPageTemplate === tpl.key
+                          ? "bg-gold/10 border-gold/40 text-white"
+                          : "bg-black/30 border-white/5 hover:border-white/10 text-slate-400"
+                      }`}
+                    >
+                      <div className="flex justify-between items-center mb-0.5">
+                        <span className={`text-[11px] font-semibold ${newPageTemplate === tpl.key ? "text-gold" : "text-slate-300"}`}>
+                          {tpl.title}
+                        </span>
+                        {newPageTemplate === tpl.key && <span className="text-[9px] text-gold">✓ Aktiv</span>}
+                      </div>
+                      <p className="text-[10px] text-slate-400 leading-normal">{tpl.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Number of blank pages input if blank-multiple is chosen */}
+              {newPageTemplate === "blank-multiple" && (
+                <div className="animate-fadeIn space-y-1">
+                  <label className="text-[10px] font-bold text-gold uppercase tracking-wider block font-mono">
+                    Anzahl der leeren Seiten
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={10}
+                    value={newPageCount}
+                    onChange={(e) => setNewPageCount(Math.max(1, Math.min(10, parseInt(e.target.value) || 1)))}
+                    className="w-full bg-black/40 border border-white/5 rounded-lg px-3 py-2 text-xs text-slate-200 placeholder-gray-600 focus:outline-none focus:ring-1 focus:ring-gold/30 font-mono"
+                  />
+                  <span className="text-[9px] text-gray-500 block font-mono">Maximal 10 Seiten auf einmal erstellen.</span>
+                </div>
+              )}
+            </div>
+
+            <div className="pt-3 border-t border-white/5 flex gap-2.5 justify-end">
+              <button
+                onClick={() => setShowPageOptionsModal(false)}
+                className="bg-white/5 hover:bg-white/10 text-white font-semibold py-2 px-4 rounded-lg transition-colors text-[10px]"
+              >
+                Abbrechen
+              </button>
+              <button
+                onClick={() => {
+                  let isEmpty = false;
+                  let count = 1;
+                  let prefilledWidgets: any[] | undefined = undefined;
+
+                  if (newPageTemplate === "blank") {
+                    isEmpty = true;
+                  } else if (newPageTemplate === "blank-multiple") {
+                    isEmpty = true;
+                    count = newPageCount;
+                  } else if (newPageTemplate === "ai") {
+                    prefilledWidgets = ["ai-chat", "writing-assistant", "pomodoro"];
+                  } else if (newPageTemplate === "finance") {
+                    prefilledWidgets = ["todo", "finance", "weather"];
+                  }
+
+                  handleAddNewPage({
+                    title: newPageTitle.trim() || "Neue Seite",
+                    icon: newPageIcon,
+                    isEmpty,
+                    count,
+                    prefilledWidgets
+                  });
+
+                  setShowPageOptionsModal(false);
+                }}
+                className="bg-gold hover:bg-[#b08e4d] text-black font-bold py-2 px-4 rounded-lg transition-colors text-[10px]"
+              >
+                Seite(n) erstellen
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -1,7 +1,5 @@
 # Zenith Intelligence Dashboard
 
-https://ai.studio/apps/46c5e04a-2100-4394-a65c-2ecb95d94018
-
 Zenith ist eine hochgradig personalisierbare, KI-gestützte Arbeitsumgebung und ein intelligentes Produktivitäts-Dashboard. Es wurde entwickelt, um modernste KI-Agenten, NLP-basierte Organisationswerkzeuge, Reiseplaner und Smart-Home-Zentralen in einer ästhetischen, nahtlosen und reaktionsschnellen Benutzeroberfläche zu vereinen.
 
 ---
@@ -15,6 +13,17 @@ Zenith ist eine hochgradig personalisierbare, KI-gestützte Arbeitsumgebung und 
 *   **Musik & Ambient-Synthesizer:** Entspannende Soundtracks abspielen oder eigene Melodien über den integrierten Synthesizer komponieren.
 *   **Google Maps Reisebegleiter:** Reiserouten planen, Sehenswürdigkeiten entdecken und den Echtzeit-Übersetzer nutzen.
 *   **Umfassende Systemeinstellungen:** Volle Kontrolle über Themen (z.B. Cosmic Dark, Amber Warm, OLED Black), Schriftarten (Inter, Space Grotesk, JetBrains Mono), Akzentfarben, KI-Modelle, API-Schlüssel und Datenschutzeinstellungen.
+
+---
+
+## 🔐 Benutzeranmeldung (Admin-Konto)
+
+Für den uneingeschränkten administrativen Systemzugriff und die automatische Datensynchronisation (sowohl lokal als auch in der Firestore-Cloud) verwenden Sie bitte die folgenden Zugangsdaten im Anmeldebereich:
+
+*   **Benutzername / E-Mail:** `admin`
+*   **Passwort:** `25041982`
+
+*Hinweis: Wenn Sie als Admin angemeldet sind, werden alle Ihre benutzerdefinierten Widgets, Layouts, Designthemen und KI-Konfigurationen beim Verlassen des Dashboards automatisch gespeichert und bei der nächsten Anmeldung vollständig wiederhergestellt.*
 
 ---
 

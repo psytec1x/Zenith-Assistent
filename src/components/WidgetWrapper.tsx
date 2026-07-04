@@ -6,7 +6,10 @@ import {
   Minimize2, 
   Palette, 
   ChevronRight, 
-  ChevronLeft 
+  ChevronLeft,
+  ChevronDown,
+  ChevronUp,
+  GripVertical
 } from "lucide-react";
 import { DashboardWidget } from "../types";
 import { motion } from "motion/react";
@@ -17,6 +20,13 @@ interface WidgetWrapperProps {
   onDelete: () => void;
   children?: any;
   key?: any;
+  onDragStart?: (e: React.DragEvent, id: string) => void;
+  onDragOver?: (e: React.DragEvent, id: string) => void;
+  onDragEnd?: (e: React.DragEvent) => void;
+  onDrop?: (e: React.DragEvent, id: string) => void;
+  isDragging?: boolean;
+  isDragOver?: boolean;
+  isMobile?: boolean;
 }
 
 const COLOR_MAP: Record<string, { bg: string; border: string; accent: string; text: string }> = {
@@ -64,7 +74,19 @@ const COLOR_MAP: Record<string, { bg: string; border: string; accent: string; te
   }
 };
 
-export default function WidgetWrapper({ widget, onUpdate, onDelete, children }: WidgetWrapperProps) {
+export default function WidgetWrapper({ 
+  widget, 
+  onUpdate, 
+  onDelete, 
+  children,
+  onDragStart,
+  onDragOver,
+  onDragEnd,
+  onDrop,
+  isDragging = false,
+  isDragOver = false,
+  isMobile = false
+}: WidgetWrapperProps) {
   const [showConfig, setShowConfig] = useState(false);
   const [isResizing, setIsResizing] = useState(false);
   const colorScheme = COLOR_MAP[widget.color] || COLOR_MAP.slate;
@@ -137,27 +159,50 @@ export default function WidgetWrapper({ widget, onUpdate, onDelete, children }: 
     <motion.div
       layout
       id={`widget-${widget.id}`}
-      className={`rounded-xl border p-5 backdrop-blur-md flex flex-col h-full relative transition-all duration-300 ${colorScheme.bg} ${
+      onDragOver={(e) => onDragOver?.(e, widget.id)}
+      onDrop={(e) => onDrop?.(e, widget.id)}
+      className={`rounded-xl border p-5 backdrop-blur-md flex flex-col relative transition-all duration-300 ${colorScheme.bg} ${
         isResizing ? "ring-2 ring-gold border-gold/40 shadow-[0_0_25px_rgba(197,160,89,0.35)] z-30 scale-[1.01]" : ""
+      } ${isDragging ? "opacity-30 border-dashed border-gold/40 scale-95 pointer-events-none" : ""} ${
+        isDragOver ? "ring-2 ring-gold/60 border-gold/60 bg-gold/5 scale-[1.02]" : ""
       }`}
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ duration: 0.15 }}
       style={{
-        gridColumn: `span ${widget.w} / span ${widget.w}`,
-        minHeight: widget.h === 1 ? "180px" : widget.h === 2 ? "380px" : "560px"
+        gridColumn: isMobile ? "span 1 / span 1" : `span ${widget.w} / span ${widget.w}`,
+        minHeight: widget.collapsed ? "56px" : widget.h === 1 ? "180px" : widget.h === 2 ? "380px" : "560px",
+        height: widget.collapsed ? "56px" : "auto"
       }}
     >
       {/* Widget Header */}
-      <div className="flex items-center justify-between mb-4 border-b border-white/5 pb-2">
-        <input
-          type="text"
-          value={widget.title}
-          onChange={(e) => onUpdate({ ...widget, title: e.target.value })}
-          className="bg-transparent font-serif text-sm text-white tracking-wide focus:outline-none focus:ring-1 focus:ring-gold/30 rounded px-1 w-full mr-2"
-        />
+      <div className={`flex items-center justify-between pb-1.5 ${widget.collapsed ? "" : "mb-4 border-b border-white/5"}`}>
+        <div className="flex items-center flex-1 min-w-0 mr-2">
+          <div
+            draggable
+            onDragStart={(e) => onDragStart?.(e, widget.id)}
+            onDragEnd={onDragEnd}
+            className="text-slate-500 hover:text-gold cursor-grab active:cursor-grabbing p-1 -ml-1 mr-1.5 transition-colors shrink-0"
+            title="Widget verschieben (Ziehen)"
+          >
+            <GripVertical size={14} />
+          </div>
+          <input
+            type="text"
+            value={widget.title}
+            onChange={(e) => onUpdate({ ...widget, title: e.target.value })}
+            className="bg-transparent font-serif text-sm text-white tracking-wide focus:outline-none focus:ring-1 focus:ring-gold/30 rounded px-1 w-full"
+          />
+        </div>
         <div className="flex items-center space-x-1.5 shrink-0">
+          <button
+            onClick={() => onUpdate({ ...widget, collapsed: !widget.collapsed })}
+            className="text-slate-400 hover:text-white p-1 rounded hover:bg-white/5 transition-colors"
+            title={widget.collapsed ? "Aufklappen" : "Einklappen"}
+          >
+            {widget.collapsed ? <ChevronDown size={14} /> : <ChevronUp size={14} />}
+          </button>
           <button
             onClick={() => setShowConfig(!showConfig)}
             className="text-slate-400 hover:text-white p-1 rounded hover:bg-white/5 transition-colors"
@@ -253,29 +298,33 @@ export default function WidgetWrapper({ widget, onUpdate, onDelete, children }: 
       )}
 
       {/* Widget Content */}
-      <div className="flex-1 flex flex-col min-h-0 overflow-y-auto custom-scrollbar">
-        {children}
-      </div>
+      {!widget.collapsed && (
+        <div className="flex-1 flex flex-col min-h-0 overflow-y-auto custom-scrollbar">
+          {children}
+        </div>
+      )}
 
       {/* Resizing Handle */}
-      <div
-        onMouseDown={handleResizeMouseDown}
-        className="absolute bottom-1 right-1 w-4 h-4 cursor-se-resize flex items-end justify-end p-0.5 group/handle z-20"
-        title="Größe durch Ziehen mit der Maus anpassen"
-      >
-        <svg
-          width="10"
-          height="10"
-          viewBox="0 0 10 10"
-          className={`text-slate-500/60 group-hover/handle:text-gold transition-colors ${
-            isResizing ? "text-gold" : ""
-          }`}
+      {!widget.collapsed && (
+        <div
+          onMouseDown={handleResizeMouseDown}
+          className="absolute bottom-1 right-1 w-4 h-4 cursor-se-resize flex items-end justify-end p-0.5 group/handle z-20"
+          title="Größe durch Ziehen mit der Maus anpassen"
         >
-          <line x1="10" y1="0" x2="0" y2="10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="10" y1="4" x2="4" y2="10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-          <line x1="10" y1="8" x2="8" y2="10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-        </svg>
-      </div>
+          <svg
+            width="10"
+            height="10"
+            viewBox="0 0 10 10"
+            className={`text-slate-500/60 group-hover/handle:text-gold transition-colors ${
+              isResizing ? "text-gold" : ""
+            }`}
+          >
+            <line x1="10" y1="0" x2="0" y2="10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="10" y1="4" x2="4" y2="10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+            <line x1="10" y1="8" x2="8" y2="10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </div>
+      )}
     </motion.div>
   );
 }

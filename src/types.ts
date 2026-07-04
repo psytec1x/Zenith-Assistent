@@ -25,11 +25,15 @@ export interface DashboardWidget {
     | "meeting-assistant"
     | "voice-recorder"
     | "maps-itinerary"
-    | "search-engine";
+    | "search-engine"
+    | "pomodoro"
+    | "finance"
+    | "weather";
   title: string;
   w: number; // grid col-span (e.g. 1, 2, 3, 4)
   h: number; // height variant or custom (e.g. "small", "medium", "large")
   color: string; // e.g. "slate", "blue", "emerald", "amber", "rose", "violet"
+  collapsed?: boolean;
   settings?: Record<string, any>;
 }
 

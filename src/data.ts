@@ -145,13 +145,13 @@ export const INITIAL_PAGES: DashboardPage[] = [
     icon: "LayoutDashboard",
     headerImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
     widgets: [
-      { id: "w-chat", type: "ai-chat", title: "Persönlicher KI-Agent", w: 2, h: 2, color: "slate" },
-      { id: "w-todo", type: "todo", title: "Aufgaben (Natural Language Input)", w: 2, h: 2, color: "blue" },
-      { id: "w-calendar", type: "calendar", title: "Kalender & Termine", w: 2, h: 2, color: "emerald" },
-      { id: "w-links", type: "quick-links", title: "Favorisierte KI-Agenten", w: 2, h: 1, color: "violet" },
-      { id: "w-bookmarks", type: "bookmarks", title: "Google Lesezeichen", w: 2, h: 1, color: "amber" },
-      { id: "w-home", type: "smart-home", title: "Smart-Home (Web Bluetooth)", w: 2, h: 1, color: "rose" },
-      { id: "w-music", type: "music-player", title: "Intelligentes Musiksystem", w: 2, h: 1, color: "teal" }
+      { id: "w-chat", type: "ai-chat", title: "KI-Agent", w: 2, h: 2, color: "slate" },
+      { id: "w-todo", type: "todo", title: "Aufgaben", w: 2, h: 2, color: "blue" },
+      { id: "w-calendar", type: "calendar", title: "Kalender", w: 2, h: 2, color: "emerald" },
+      { id: "w-links", type: "quick-links", title: "Schnelllinks", w: 2, h: 1, color: "violet" },
+      { id: "w-bookmarks", type: "bookmarks", title: "Lesezeichen", w: 2, h: 1, color: "amber" },
+      { id: "w-home", type: "smart-home", title: "Smart Home", w: 2, h: 1, color: "rose" },
+      { id: "w-music", type: "music-player", title: "Musik-Player", w: 2, h: 1, color: "teal" }
     ],
     subpages: ["wissen-wiki", "reise-planer"],
     contentBlocks: [
@@ -176,9 +176,9 @@ export const INITIAL_PAGES: DashboardPage[] = [
     icon: "BookOpen",
     headerImage: "https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&w=1200&q=80",
     widgets: [
-      { id: "w-writing", type: "writing-assistant", title: "KI-Schreibassistent", w: 2, h: 2, color: "violet" },
-      { id: "w-meeting", type: "meeting-assistant", title: "Besprechungsassistent", w: 2, h: 2, color: "slate" },
-      { id: "w-contacts", type: "contacts-manager", title: "Kontaktnetzwerk-Analysen", w: 2, h: 2, color: "emerald" }
+      { id: "w-writing", type: "writing-assistant", title: "Schreib-KI", w: 2, h: 2, color: "violet" },
+      { id: "w-meeting", type: "meeting-assistant", title: "Meeting-Assistent", w: 2, h: 2, color: "slate" },
+      { id: "w-contacts", type: "contacts-manager", title: "CRM & Kontakte", w: 2, h: 2, color: "emerald" }
     ],
     subpages: [],
     contentBlocks: [
@@ -203,9 +203,9 @@ print(sieve_of_eratosthenes(30)) # [2, 3, 5, 7, 11, 13, 17, 19, 23, 29]` }
     icon: "Map",
     headerImage: "https://images.unsplash.com/photo-1506012787146-f92b2d7d6d96?auto=format&fit=crop&w=1200&q=80",
     widgets: [
-      { id: "w-maps", type: "maps-itinerary", title: "Google Maps Reisebegleiter & Übersetzung", w: 4, h: 2, color: "rose" },
-      { id: "w-news", type: "news-bias", title: "Nachrichten-Zusammenfasser & Bias-Check", w: 2, h: 2, color: "amber" },
-      { id: "w-email", type: "email-inbox", title: "KI E-Mail Verwaltung", w: 2, h: 2, color: "blue" }
+      { id: "w-maps", type: "maps-itinerary", title: "Reisebegleiter", w: 4, h: 2, color: "rose" },
+      { id: "w-news", type: "news-bias", title: "News-Bias", w: 2, h: 2, color: "amber" },
+      { id: "w-email", type: "email-inbox", title: "E-Mail", w: 2, h: 2, color: "blue" }
     ],
     subpages: [],
     contentBlocks: [

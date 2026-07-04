@@ -16,8 +16,6 @@ Zenith ist eine hochgradig personalisierbare, KI-gestützte Arbeitsumgebung und 
 
 ---
 
-## 🔐 Benutzeranmeldung
-
 
 
 ## 🚀 Installation & Lokaler Start

@@ -1,0 +1,66 @@
+{
+  "entities": {
+    "UserDashboard": {
+      "title": "User Dashboard Config",
+      "description": "The complete saved state of a user's dashboard and widgets",
+      "type": "object",
+      "properties": {
+        "pages": {
+          "type": "array",
+          "description": "Customized dashboard pages with widgets"
+        },
+        "tasks": {
+          "type": "array",
+          "description": "User task items"
+        },
+        "bookmarks": {
+          "type": "array",
+          "description": "Saved bookmark links"
+        },
+        "quickLinks": {
+          "type": "array",
+          "description": "Curated quick links"
+        },
+        "smartDevices": {
+          "type": "array",
+          "description": "Smart home devices configured"
+        },
+        "emails": {
+          "type": "array",
+          "description": "Parsed emails"
+        },
+        "contacts": {
+          "type": "array",
+          "description": "Contact listings"
+        },
+        "news": {
+          "type": "array",
+          "description": "Bias-checked news articles"
+        },
+        "meetings": {
+          "type": "array",
+          "description": "Scheduled meetings"
+        },
+        "activePageId": {
+          "type": "string",
+          "description": "ID of the currently active page"
+        },
+        "sidebarOpen": {
+          "type": "boolean",
+          "description": "Whether the sidebar is open"
+        },
+        "settings": {
+          "type": "object",
+          "description": "Theme, typography, and customization preferences"
+        }
+      },
+      "required": ["pages", "activePageId"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "UserDashboard",
+      "description": "Personalized configuration and data for each user"
+    }
+  }
+}

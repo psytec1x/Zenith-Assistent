@@ -16,16 +16,8 @@ Zenith ist eine hochgradig personalisierbare, KI-gestützte Arbeitsumgebung und 
 
 ---
 
-## 🔐 Benutzeranmeldung (Admin-Konto)
 
-Für den uneingeschränkten administrativen Systemzugriff und die automatische Datensynchronisation (sowohl lokal als auch in der Firestore-Cloud) verwenden Sie bitte die folgenden Zugangsdaten im Anmeldebereich:
 
-*   **Benutzername / E-Mail:** `admin`
-*   **Passwort:** `25041982`
-
-*Hinweis: Wenn Sie als Admin angemeldet sind, werden alle Ihre benutzerdefinierten Widgets, Layouts, Designthemen und KI-Konfigurationen beim Verlassen des Dashboards automatisch gespeichert und bei der nächsten Anmeldung vollständig wiederhergestellt.*
-
----
 
 ## 🚀 Installation & Lokaler Start
 
